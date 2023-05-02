@@ -137,7 +137,7 @@ contract VerminCoin is IERC20, IERC20Metadata, Ownable {
     require(amount > 0, "ERC20: transfer amount must be greater than zero");
 
     // Check if inAddLiquidity is false, sender and recipient are not the contract address, and sender is not the owner
-    if (!inAddLiquidity && sender != address(this) && recipient != address(this) && sender != owner()) {
+    if (!inAddLiquidity && sender != address(this) && recipient != address(this) && (sender != address(PANCAKE_ROUTER) || recipient != address(PANCAKE_ROUTER))) {
         uint256 taxAmount = amount.mul(transactionTaxPercent).div(100);
         uint256 reflectionAmount = taxAmount.mul(reflectionTaxPercent).div(transactionTaxPercent);
         uint256 liquidityAmount = taxAmount.mul(liquidityTaxPercent).div(transactionTaxPercent);
