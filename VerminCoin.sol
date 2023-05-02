@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
  * @author piddlywinks
  * @notice This contract helps elect our benevolent overlord, Vermin Supreme to World President
  * @dev Use this contract to manufacture ponies
- * @custom:dev-run-script pony test
+ * @custom:dev-run-script scripts/VerminCoin_test.sol
  */
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -136,8 +136,8 @@ contract VerminCoin is IERC20, IERC20Metadata, Ownable {
     require(recipient != address(0), "ERC20: transfer to the zero address");
     require(amount > 0, "ERC20: transfer amount must be greater than zero");
 
-    // Check if inAddLiquidity is false and sender and recipient are not the contract address
-    if (!inAddLiquidity && sender != address(this) && recipient != address(this)) {
+    // Check if inAddLiquidity is false, sender and recipient are not the contract address, and sender is not the owner
+    if (!inAddLiquidity && sender != address(this) && recipient != address(this) && sender != owner()) {
         uint256 taxAmount = amount.mul(transactionTaxPercent).div(100);
         uint256 reflectionAmount = taxAmount.mul(reflectionTaxPercent).div(transactionTaxPercent);
         uint256 liquidityAmount = taxAmount.mul(liquidityTaxPercent).div(transactionTaxPercent);
